@@ -25,6 +25,7 @@ public class UpdateView extends VerticalLayout implements HasUrlParameter<Long> 
 
     private Button saveButton = new Button("Päivitä");
     private Button backButton = new Button("Takaisin");
+    private Button deleteButton = new Button("Poista tapahtuma");
 
     public UpdateView(EventService eventService) {
         this.eventService = eventService;
@@ -47,9 +48,16 @@ public class UpdateView extends VerticalLayout implements HasUrlParameter<Long> 
             }
         });
 
+        deleteButton.addClickListener(e -> {
+            if (event != null) {
+                eventService.deleteEventById(event.getId());
+                getUI().ifPresent(ui -> ui.navigate(""));
+            }
+        });
+        
         backButton.addClickListener(e -> getUI().ifPresent(ui -> ui.navigate("")));
         add(nameField, dateField, cityField, addressField, organizerField,
-            new HorizontalLayout(saveButton, backButton));
+            new HorizontalLayout(saveButton, deleteButton), backButton);
     }
 
     @Override

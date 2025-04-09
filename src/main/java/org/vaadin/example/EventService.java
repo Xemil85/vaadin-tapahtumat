@@ -58,4 +58,8 @@ public class EventService {
 
         return eventRepo.save(event);
     }
+
+    public void deleteEventById(Long id) {
+        eventRepo.deleteById(id);
+    }
 }
