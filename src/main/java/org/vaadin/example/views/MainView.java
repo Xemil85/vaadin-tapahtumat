@@ -1,23 +1,20 @@
 package org.vaadin.example.views;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.vaadin.example.Event;
 import org.vaadin.example.EventService;
 
-import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.Grid.Column;
 import com.vaadin.flow.component.grid.HeaderRow;
 import com.vaadin.flow.component.html.H1;
-import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import com.vaadin.flow.component.html.H4;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.Route;
-import com.vaadin.flow.router.RouterLink;
 
 /**
  * A sample Vaadin view class.
@@ -31,7 +28,7 @@ import com.vaadin.flow.router.RouterLink;
  * The main view contains a text field for getting the user name and a button
  * that shows a greeting message in a notification.
  */
-@Route("")
+@Route(value = "", layout = MainLayout.class)
 public class MainView extends VerticalLayout {
 
     private final EventService eventService;
@@ -57,13 +54,18 @@ public class MainView extends VerticalLayout {
         configureGrid();
         add(eventGrid);
 
-        // Uuden tapahtuman lisäämisen linkki
-        Button addEventButton = new Button("Lisää uusi tapahtuma", event -> 
-            event.getSource().getUI().ifPresent(ui -> ui.navigate(EventView.class))
-        );
-        add(addEventButton);
+        eventGrid.asSingleSelect().addValueChangeListener(event -> {
+            Event selected = event.getValue();
+            if (selected != null) {
+                getUI().ifPresent(ui -> ui.navigate("update/" + selected.getId()));
+            }
+        });        
 
         updateGrid();
+
+        H4 footerText = new H4("© 2025 Tapahtumasovellus");
+
+        add(footerText);
     }
 
     private void configureGrid() {
