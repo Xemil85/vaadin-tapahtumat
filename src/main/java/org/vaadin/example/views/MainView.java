@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.vaadin.example.Event;
-import org.vaadin.example.EventService;
+import org.vaadin.example.Services.EventService;
 
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.grid.Grid;
@@ -15,6 +15,8 @@ import com.vaadin.flow.component.html.H4;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.Route;
+
+import jakarta.annotation.security.PermitAll;
 
 /**
  * A sample Vaadin view class.
@@ -29,6 +31,7 @@ import com.vaadin.flow.router.Route;
  * that shows a greeting message in a notification.
  */
 @Route(value = "", layout = MainLayout.class)
+@PermitAll
 public class MainView extends VerticalLayout {
 
     private final EventService eventService;

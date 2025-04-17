@@ -1,6 +1,7 @@
 package org.vaadin.example.views;
 
 import com.vaadin.flow.component.applayout.AppLayout;
+import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.orderedlayout.FlexComponent.Alignment;
 import com.vaadin.flow.component.orderedlayout.FlexComponent.JustifyContentMode;
@@ -18,8 +19,9 @@ public class MainLayout extends AppLayout {
 
         RouterLink mainViewLink = new RouterLink("Etusivu", MainView.class);
         RouterLink addEventLink = new RouterLink("Lisää tapahtuma", EventView.class);
+        Anchor loginLink = new Anchor("login", "Kirjaudu");
 
-        HorizontalLayout navigation = new HorizontalLayout(mainViewLink, addEventLink);
+        HorizontalLayout navigation = new HorizontalLayout(mainViewLink, addEventLink, loginLink);
 
         HorizontalLayout header = new HorizontalLayout(title, navigation);
         header.setWidthFull();

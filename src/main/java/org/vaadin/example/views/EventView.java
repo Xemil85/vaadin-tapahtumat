@@ -1,7 +1,7 @@
 package org.vaadin.example.views;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.vaadin.example.EventService;
+import org.vaadin.example.Services.EventService;
 
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.datepicker.DatePicker;
