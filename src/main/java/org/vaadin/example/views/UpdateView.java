@@ -13,7 +13,10 @@ import com.vaadin.flow.router.HasUrlParameter;
 import com.vaadin.flow.router.OptionalParameter;
 import com.vaadin.flow.router.Route;
 
+import jakarta.annotation.security.PermitAll;
+
 @Route("update")
+@PermitAll
 public class UpdateView extends VerticalLayout implements HasUrlParameter<Long> {
     private final EventService eventService;
     private Event event;

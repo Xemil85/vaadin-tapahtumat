@@ -15,6 +15,7 @@ import com.vaadin.flow.component.html.H4;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.server.auth.AnonymousAllowed;
 
 import jakarta.annotation.security.PermitAll;
 
@@ -30,8 +31,8 @@ import jakarta.annotation.security.PermitAll;
  * The main view contains a text field for getting the user name and a button
  * that shows a greeting message in a notification.
  */
-@Route(value = "", layout = MainLayout.class)
-@PermitAll
+@Route(value = "")
+@AnonymousAllowed
 public class MainView extends VerticalLayout {
 
     private final EventService eventService;
