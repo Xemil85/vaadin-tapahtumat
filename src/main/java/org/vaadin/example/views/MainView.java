@@ -44,7 +44,6 @@ public class MainView extends VerticalLayout {
     TextField addressFilter = new TextField("Suodata osoitteella");
     TextField organizerFilter = new TextField("Suodata järjestäjällä");
 
-
     public MainView(EventService eventService) {
         this.eventService = eventService;
 
