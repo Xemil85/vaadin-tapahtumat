@@ -67,7 +67,7 @@ public class EventView extends VerticalLayout {
                         organizerField.getValue(),
                         currentUser.get()
                 );
-                Notification.show("Tapahtuma lisätty!");
+                Notification.show("Tapahtuma lisätty! " + currentUser.get().getId());
                 clearForm();
             } else {
                 Notification.show("Täytä kaikki kentät!");

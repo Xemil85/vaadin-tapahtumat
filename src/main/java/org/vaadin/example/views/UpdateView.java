@@ -1,5 +1,8 @@
 package org.vaadin.example.views;
 
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.vaadin.example.*;
 import org.vaadin.example.Services.EventService;
 import org.vaadin.example.security.AuthenticatedUser;
@@ -14,15 +17,11 @@ import com.vaadin.flow.router.BeforeEvent;
 import com.vaadin.flow.router.HasUrlParameter;
 import com.vaadin.flow.router.OptionalParameter;
 import com.vaadin.flow.router.Route;
-import com.vaadin.flow.spring.annotation.SpringComponent;
-import com.vaadin.flow.spring.annotation.UIScope;
 
 import jakarta.annotation.security.PermitAll;
 
 @Route("update")
 @PermitAll
-@SpringComponent
-@UIScope
 public class UpdateView extends VerticalLayout implements HasUrlParameter<Long> {
     private final EventService eventService;
     private final AuthenticatedUser authenticatedUser;
@@ -38,9 +37,16 @@ public class UpdateView extends VerticalLayout implements HasUrlParameter<Long> 
     private Button backButton = new Button("Takaisin");
     private Button deleteButton = new Button("Poista tapahtuma");
 
+    @Autowired
     public UpdateView(EventService eventService, AuthenticatedUser authenticatedUser) {
         this.eventService = eventService;
         this.authenticatedUser = authenticatedUser;
+
+        if (authenticatedUser == null) {
+            System.out.println("🚨 authenticatedUser is NULL!");
+        } else {
+            System.out.println("✅ authenticatedUser injected: " + authenticatedUser);
+        }
 
         setSizeFull(); // täyttää koko näytön
         setDefaultHorizontalComponentAlignment(Alignment.CENTER); // keskittää lomakkeen vaakasuunnassa
@@ -74,13 +80,22 @@ public class UpdateView extends VerticalLayout implements HasUrlParameter<Long> 
 
     @Override
     public void setParameter(BeforeEvent beforeEvent, @OptionalParameter Long eventId) {
-        AppUser currentUser = eventService.getCurrentUser();
-
-        if (eventId != null && !event.getCreatedBy().equals(currentUser)) {
+        if (eventId != null) {
             this.event = eventService.findEventById(eventId);
+
             if (event != null) {
-                if (!event.getCreatedBy().equals(currentUser)) {
-                    Notification.show("Et voi muokata muiden tapahtumia");
+                Optional<AppUser> currentUser = authenticatedUser.get();
+
+                if (currentUser.isEmpty()) {
+                    Notification.show("Et ole kirjautunut sisään");
+                    getUI().ifPresent(ui -> ui.navigate("login"));
+                    return;
+                }
+
+                Long currentUserId = currentUser.get().getId();
+                Long creatorId = event.getCreatedBy().getId();
+                if (!currentUserId.equals(creatorId)) {
+                    Notification.show("Et voi muokata muiden käyttäjien tapahtumia");
                     getUI().ifPresent(ui -> ui.navigate(""));
                     return;
                 }

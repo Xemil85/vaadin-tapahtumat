@@ -28,6 +28,7 @@ public class Event {
     private Organizer organizer;
 
     @ManyToOne
+    @JoinColumn(name = "created_by_id")
     private AppUser createdBy;
      
     public Event(String name, LocalDate date, Location location, Organizer organizer) {
