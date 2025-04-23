@@ -4,12 +4,14 @@ import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.vaadin.example.AppUser;
 import org.vaadin.example.Event;
 import org.vaadin.example.Location;
 import org.vaadin.example.Organizer;
 import org.vaadin.example.Repositories.EventRepository;
 import org.vaadin.example.Repositories.LocationRepository;
 import org.vaadin.example.Repositories.OrganizerRepository;
+import org.vaadin.example.security.AuthenticatedUser;
 
 @Service
 public class EventService {
@@ -17,6 +19,7 @@ public class EventService {
     private final EventRepository eventRepo;
     private final LocationRepository locationRepo;
     private final OrganizerRepository organizerRepo;
+    private AuthenticatedUser authenticatedUser;
 
     public EventService(EventRepository eventRepo, LocationRepository locationRepo, OrganizerRepository organizerRepo) {
         this.eventRepo = eventRepo;
@@ -28,7 +31,7 @@ public class EventService {
         return eventRepo.findAll();
     }
 
-    public Event saveEvent(String name, java.time.LocalDate date, String locationName, String address, String organizerName) {
+    public Event saveEvent(String name, LocalDate date, String locationName, String address, String organizerName, AppUser creator) {
         Location location = locationRepo.findByName(locationName)
                 .map(existing -> {
                     existing.setAddress(address);
@@ -40,6 +43,7 @@ public class EventService {
                 .orElseGet(() -> organizerRepo.save(new Organizer(organizerName)));
 
         Event event = new Event(name, date, location, organizer);
+        event.setCreatedBy(creator);
         return eventRepo.save(event);
     }
 
@@ -67,5 +71,9 @@ public class EventService {
 
     public void deleteEventById(Long id) {
         eventRepo.deleteById(id);
+    }
+
+    public AppUser getCurrentUser() {
+        return authenticatedUser.get().orElseThrow();
     }
 }

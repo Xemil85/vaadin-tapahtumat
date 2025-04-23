@@ -2,9 +2,11 @@ package org.vaadin.example.views;
 
 import org.vaadin.example.*;
 import org.vaadin.example.Services.EventService;
+import org.vaadin.example.security.AuthenticatedUser;
 
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.datepicker.DatePicker;
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
@@ -12,13 +14,18 @@ import com.vaadin.flow.router.BeforeEvent;
 import com.vaadin.flow.router.HasUrlParameter;
 import com.vaadin.flow.router.OptionalParameter;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.spring.annotation.SpringComponent;
+import com.vaadin.flow.spring.annotation.UIScope;
 
 import jakarta.annotation.security.PermitAll;
 
 @Route("update")
 @PermitAll
+@SpringComponent
+@UIScope
 public class UpdateView extends VerticalLayout implements HasUrlParameter<Long> {
     private final EventService eventService;
+    private final AuthenticatedUser authenticatedUser;
     private Event event;
 
     private TextField nameField = new TextField("Tapahtuman nimi");
@@ -31,8 +38,9 @@ public class UpdateView extends VerticalLayout implements HasUrlParameter<Long> 
     private Button backButton = new Button("Takaisin");
     private Button deleteButton = new Button("Poista tapahtuma");
 
-    public UpdateView(EventService eventService) {
+    public UpdateView(EventService eventService, AuthenticatedUser authenticatedUser) {
         this.eventService = eventService;
+        this.authenticatedUser = authenticatedUser;
 
         setSizeFull(); // täyttää koko näytön
         setDefaultHorizontalComponentAlignment(Alignment.CENTER); // keskittää lomakkeen vaakasuunnassa
@@ -66,9 +74,16 @@ public class UpdateView extends VerticalLayout implements HasUrlParameter<Long> 
 
     @Override
     public void setParameter(BeforeEvent beforeEvent, @OptionalParameter Long eventId) {
-        if (eventId != null) {
+        AppUser currentUser = eventService.getCurrentUser();
+
+        if (eventId != null && !event.getCreatedBy().equals(currentUser)) {
             this.event = eventService.findEventById(eventId);
             if (event != null) {
+                if (!event.getCreatedBy().equals(currentUser)) {
+                    Notification.show("Et voi muokata muiden tapahtumia");
+                    getUI().ifPresent(ui -> ui.navigate(""));
+                    return;
+                }
                 nameField.setValue(event.getName());
                 dateField.setValue(event.getDate());
                 cityField.setValue(event.getLocation().getName());

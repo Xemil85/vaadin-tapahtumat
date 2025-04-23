@@ -27,6 +27,8 @@ public class RegisterView extends VerticalLayout {
 
         registerBtn.addClickListener(e -> {
             boolean success = userService.register(username.getValue(), password.getValue());
+            System.out.println(username.getValue());
+            System.out.println(password.getValue());
             if (success) {
                 status.setText("Rekisteröinti onnistui!");
             } else {

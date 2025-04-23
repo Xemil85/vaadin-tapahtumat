@@ -1,7 +1,11 @@
 package org.vaadin.example.views;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.vaadin.example.AppUser;
 import org.vaadin.example.Services.EventService;
+import org.vaadin.example.security.AuthenticatedUser;
 
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.datepicker.DatePicker;
@@ -11,13 +15,18 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.spring.annotation.SpringComponent;
+import com.vaadin.flow.spring.annotation.UIScope;
 
 import jakarta.annotation.security.PermitAll;
 
 @Route("add")
 @PermitAll
+@SpringComponent
+@UIScope
 public class EventView extends VerticalLayout {
     private final EventService eventService;
+    private final AuthenticatedUser authenticatedUser;
 
     private final TextField nameField = new TextField("Tapahtuman nimi");
     private final DatePicker dateField = new DatePicker("Päivämäärä");
@@ -27,8 +36,9 @@ public class EventView extends VerticalLayout {
     private final Button saveButton = new Button("Tallenna tapahtuma");
 
     @Autowired
-    public EventView(EventService eventService) {
+    public EventView(EventService eventService, AuthenticatedUser authenticatedUser) {
         this.eventService = eventService;
+        this.authenticatedUser = authenticatedUser;
 
         setSizeFull(); // täyttää koko näytön
         setDefaultHorizontalComponentAlignment(Alignment.CENTER); // keskittää lomakkeen vaakasuunnassa
@@ -47,13 +57,15 @@ public class EventView extends VerticalLayout {
 
     private void configureForm() {
         saveButton.addClickListener(e -> {
-            if (fieldsAreValid()) {
+            Optional<AppUser> currentUser = authenticatedUser.get();
+            if (fieldsAreValid() && currentUser.isPresent()) {
                 eventService.saveEvent(
                         nameField.getValue(),
                         dateField.getValue(),
                         locationField.getValue(),
                         addressField.getValue(),
-                        organizerField.getValue()
+                        organizerField.getValue(),
+                        currentUser.get()
                 );
                 Notification.show("Tapahtuma lisätty!");
                 clearForm();

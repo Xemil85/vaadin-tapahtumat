@@ -27,13 +27,9 @@ public class Event {
     @JoinColumn(name = "organizer_id")
     private Organizer organizer;
 
-    /*
-     @ManyToOne
-    @JoinColumn(name = "creator_id")
-    private AppUser creator;
-     */
-    
-
+    @ManyToOne
+    private AppUser createdBy;
+     
     public Event(String name, LocalDate date, Location location, Organizer organizer) {
         this.name = name;
         this.date = date;
@@ -84,13 +80,12 @@ public class Event {
         this.organizer = organizer;
     }
 
-    /*
-     public AppUser getCreator() { 
-        return creator; 
+    public AppUser getCreatedBy() { 
+        return createdBy; 
     }
 
-    public void setCreator(AppUser creator) { 
-        this.creator = creator; 
+    public void setCreatedBy(AppUser createdBy) { 
+        this.createdBy = createdBy; 
     }
-     */
+    
 }
