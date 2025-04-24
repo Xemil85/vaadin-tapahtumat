@@ -17,7 +17,7 @@ public class UserService {
 
     public boolean register(String username, String rawPassword) {
         if (userRepository.findByUsername(username).isPresent()) {
-            return false; // Käyttäjänimi on jo käytössä
+            return false;
         }
 
         String hashedPassword = passwordEncoder.encode(rawPassword);

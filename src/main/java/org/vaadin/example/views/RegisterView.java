@@ -3,6 +3,7 @@ package org.vaadin.example.views;
 import org.vaadin.example.Services.UserService;
 
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.PasswordField;
@@ -19,6 +20,7 @@ public class RegisterView extends VerticalLayout {
         setAlignItems(Alignment.CENTER);
         setJustifyContentMode(JustifyContentMode.CENTER);
         
+        H1 H1text = new H1("Rekiteröidy");
         TextField username = new TextField("Käyttäjänimi");
         PasswordField password = new PasswordField("Salasana");
         Button registerBtn = new Button("Rekisteröidy");
@@ -36,6 +38,6 @@ public class RegisterView extends VerticalLayout {
             }
         });
 
-        add(username, password, registerBtn, status);
+        add(H1text, username, password, registerBtn, status);
     }
 }

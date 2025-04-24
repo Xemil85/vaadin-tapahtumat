@@ -42,12 +42,6 @@ public class UpdateView extends VerticalLayout implements HasUrlParameter<Long> 
         this.eventService = eventService;
         this.authenticatedUser = authenticatedUser;
 
-        if (authenticatedUser == null) {
-            System.out.println("🚨 authenticatedUser is NULL!");
-        } else {
-            System.out.println("✅ authenticatedUser injected: " + authenticatedUser);
-        }
-
         setSizeFull(); // täyttää koko näytön
         setDefaultHorizontalComponentAlignment(Alignment.CENTER); // keskittää lomakkeen vaakasuunnassa
         getStyle().set("justify-content", "center"); // keskittää lomakkeen pystysuunnassa
@@ -85,16 +79,16 @@ public class UpdateView extends VerticalLayout implements HasUrlParameter<Long> 
 
             if (event != null) {
                 Optional<AppUser> currentUser = authenticatedUser.get();
-
                 if (currentUser.isEmpty()) {
                     Notification.show("Et ole kirjautunut sisään");
                     getUI().ifPresent(ui -> ui.navigate("login"));
                     return;
                 }
 
-                Long currentUserId = currentUser.get().getId();
-                Long creatorId = event.getCreatedBy().getId();
-                if (!currentUserId.equals(creatorId)) {
+                AppUser u = currentUser.get();
+                boolean isOwner = event.getCreatedBy().getId().equals(u.getId());
+                boolean isAdmin = "ADMIN".equals(u.getRole());
+                if (!isOwner && !isAdmin) {
                     Notification.show("Et voi muokata muiden käyttäjien tapahtumia");
                     getUI().ifPresent(ui -> ui.navigate(""));
                     return;

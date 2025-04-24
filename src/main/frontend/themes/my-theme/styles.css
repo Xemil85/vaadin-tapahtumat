@@ -16,4 +16,15 @@ vaadin-text-field.bordered::part(input-field) {
   background-color: var(--lumo-base-color);
 }
 
+vaadin-button {
+  background-color: #1976d2; /* sininen */
+  color: white;
+  border-radius: 8px;
+  font-weight: bold;
+}
+
+vaadin-button:hover {
+  background-color: #1565c0;
+}
+
 

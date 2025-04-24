@@ -66,9 +66,14 @@ public class MainView extends VerticalLayout {
             
             if (selected != null) {
                 Optional<AppUser> currentUser = authenticatedUser.get();
-                if (currentUser.isPresent() &&
-                selected.getCreatedBy().getId().equals(currentUser.get().getId())) {
-                    getUI().ifPresent(ui -> ui.navigate("update/" + selected.getId()));
+                if (currentUser.isPresent()) {
+                    AppUser u = currentUser.get();
+                    boolean isOwner = selected.getCreatedBy().getId().equals(u.getId());
+                    boolean isAdmin = "ADMIN".equals(u.getRole());
+                    if (isOwner || isAdmin) {
+                        getUI().ifPresent(ui -> ui.navigate("update/" + selected.getId()));
+                        return;
+                    }
                 } else {
                     Notification.show("Et voi muokata muiden käyttäjien tapahtumia");
                 }
