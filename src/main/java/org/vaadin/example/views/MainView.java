@@ -9,6 +9,7 @@ import org.vaadin.example.Event;
 import org.vaadin.example.Services.EventService;
 import org.vaadin.example.security.AuthenticatedUser;
 
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.Grid.Column;
@@ -18,6 +19,8 @@ import com.vaadin.flow.component.html.H4;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.router.AfterNavigationEvent;
+import com.vaadin.flow.router.AfterNavigationObserver;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 
@@ -35,7 +38,7 @@ import com.vaadin.flow.server.auth.AnonymousAllowed;
  */
 @Route(value = "")
 @AnonymousAllowed
-public class MainView extends VerticalLayout {
+public class MainView extends VerticalLayout implements AfterNavigationObserver {
 
     private final EventService eventService;
     private final Grid<Event> eventGrid = new Grid<>();
@@ -129,4 +132,23 @@ public class MainView extends VerticalLayout {
 
         eventGrid.setItems(filtered);
     }
+
+    public void refreshGridFromBackgroundThread() {
+        UI ui = UI.getCurrent();
+        if (ui != null) {
+            new Thread(() -> {
+                List<Event> newEvents = eventService.findAllEvents();
+                ui.access(() -> {
+                    eventGrid.setItems(newEvents);
+                    Notification.show("Tapahtumat päivitetty taustalta!");
+                });
+            }).start();
+        }
+    }
+
+    @Override
+    public void afterNavigation(AfterNavigationEvent event) {
+        refreshGridFromBackgroundThread();
+    }
+    
 }
