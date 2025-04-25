@@ -3,7 +3,7 @@ package org.vaadin.example.views;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.vaadin.example.AppUser;
+import org.vaadin.example.Classes.AppUser;
 import org.vaadin.example.Services.EventService;
 import org.vaadin.example.security.AuthenticatedUser;
 

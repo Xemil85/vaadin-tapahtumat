@@ -6,7 +6,7 @@ import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
-import org.vaadin.example.AppUser;
+import org.vaadin.example.Classes.AppUser;
 import org.vaadin.example.Repositories.UserRepository;
 
 @Component

@@ -5,7 +5,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import org.vaadin.example.AppUser;
+import org.vaadin.example.Classes.AppUser;
 import org.vaadin.example.Repositories.UserRepository;
 
 @Service
@@ -24,7 +24,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
         return User.builder()
                 .username(user.getUsername())
-                .password(user.getPassword()) // bcrypt-hash
+                .password(user.getPassword())
                 .roles("USER")
                 .build();
     }

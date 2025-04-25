@@ -4,10 +4,10 @@ import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
-import org.vaadin.example.AppUser;
-import org.vaadin.example.Event;
-import org.vaadin.example.Location;
-import org.vaadin.example.Organizer;
+import org.vaadin.example.Classes.AppUser;
+import org.vaadin.example.Classes.Event;
+import org.vaadin.example.Classes.Location;
+import org.vaadin.example.Classes.Organizer;
 import org.vaadin.example.Repositories.EventRepository;
 import org.vaadin.example.Repositories.LocationRepository;
 import org.vaadin.example.Repositories.OrganizerRepository;

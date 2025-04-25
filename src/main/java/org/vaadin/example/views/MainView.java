@@ -4,8 +4,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import org.vaadin.example.AppUser;
-import org.vaadin.example.Event;
+import org.vaadin.example.Classes.AppUser;
+import org.vaadin.example.Classes.Event;
 import org.vaadin.example.Services.EventService;
 import org.vaadin.example.security.AuthenticatedUser;
 

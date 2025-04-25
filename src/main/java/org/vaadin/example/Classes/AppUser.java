@@ -1,4 +1,4 @@
-package org.vaadin.example;
+package org.vaadin.example.Classes;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

@@ -1,8 +1,10 @@
 package org.vaadin.example.Services;
 
+import java.util.Optional;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.vaadin.example.AppUser;
+import org.vaadin.example.Classes.AppUser;
 import org.vaadin.example.Repositories.UserRepository;
 
 @Service
@@ -28,4 +30,16 @@ public class UserService {
 
         return true;
     }
+
+    public boolean resetPassword(String username, String newPassword) {
+        Optional<AppUser> userOpt = userRepository.findByUsername(username);
+        if (userOpt.isPresent()) {
+            AppUser user = userOpt.get();
+            user.setPassword(passwordEncoder.encode(newPassword));
+            userRepository.save(user);
+            return true;
+        }
+        return false;
+    }
+    
 }
