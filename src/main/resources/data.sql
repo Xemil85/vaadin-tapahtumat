@@ -6,11 +6,11 @@ INSERT INTO organizer (name) VALUES ('Kulttuuriyhdistys');
 INSERT INTO organizer (name) VALUES ('Musiikkiseura');
 INSERT INTO organizer (name) VALUES ('Koulutus Oy');
 
-INSERT INTO app_user (id, username, password, role)
-VALUES (1, 'user', '$2a$10$0oSipKj02nkrk1./Fyp7iO/rJMErvIQPovR8zmcbARQz.GOIskU9S', 'USER');
+INSERT INTO app_user (username, password, role)
+VALUES ('user', '$2a$10$0oSipKj02nkrk1./Fyp7iO/rJMErvIQPovR8zmcbARQz.GOIskU9S', 'USER');
 
-INSERT INTO app_user (id, username, password, role) 
-VALUES (2, 'admin', '$2a$10$mC7K1tG9gTVzUaSIPFYnqeUdhg/tCZ8VXFODOAXMiD8xRJwbDY2li', 'ADMIN');
+INSERT INTO app_user (username, password, role) 
+VALUES ('admin', '$2a$10$mC7K1tG9gTVzUaSIPFYnqeUdhg/tCZ8VXFODOAXMiD8xRJwbDY2li', 'ADMIN');
 
 INSERT INTO event (name, date, location_id, organizer_id, created_by_id) 
 VALUES ('Kevätfestarit', '2025-05-15', 1, 1, 1);
