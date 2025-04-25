@@ -33,3 +33,5 @@ Varmista, että sinulla on asennettuna Java JDK 17 tai uudempi ja Maven
 4. Kirjaudu käyttäjällä, jotta saat kaikki ominaisuudet käyttöön:
    - Käyttäjä: käyttäjätunnus: `user`, salasana: `user`
    - Admin: käyttäjätunnus: `admin`, salasana: `admin`
+5. Kun olet kirjautunut käyttäjällä niin pystyt lisäämään uuden tapahtuman painamalla "Lisää uusi tapahtuma". <br>
+   Muokkaus ja poisto tapahtuu kun kaksois klikkaat jotakin tapahtumaa niin tulee näkyviin muokkauksen tallennus ja poisto nappi
